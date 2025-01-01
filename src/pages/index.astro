@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import type { PokemonListResponse } from '../interface/pokemon-list.reponse';
 import PokemoCard from '../components/PokemoCard.astro';
+import Title from '@components/shared/Title.astro';
 
 const resp = await fetch('https://pokeapi.co/api/v2/pokemon/');
 
@@ -12,12 +13,11 @@ const title = 'Index';
 ---
 
 <Layout title={title}>
-	<h1 class="text-3xl">Listado de pokemons</h1>
-	<hr>
+	<Title>Listado de Pokemons</Title>
 
 	<section
 		arial-label="Listado de pokemons"
-		class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-3"
+		class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 mt-3"
 	>
 	{data.results.map((pokemon) => (
 		<PokemoCard 
