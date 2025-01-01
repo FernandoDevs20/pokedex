@@ -1,7 +1,7 @@
 import NavBar from '@components/shared/NavBar.astro';
 import type { FavoritePokemon } from '@interfaces/favorite-pokemon';
 import { For, createSignal } from 'solid-js';
-import { FavoritePokemonCard } from './FavoritePokemonCard';
+import { FavoritePokemonCard } from '../../components/pokemons/FavoritePokemonCard.tsx';
 
 const getLocalStoragePokemons = (): FavoritePokemon[] => {
   const favoritePokemons = JSON.parse(
