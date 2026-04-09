@@ -10,6 +10,7 @@
   transform-origin: center;
   text-decoration: none;
   cursor: pointer;
+  padding: 1rem;
 }
 
 .pokemon-card:hover {
