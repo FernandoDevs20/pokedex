@@ -1,0 +1,21 @@
+<div class="sort-select" [class.sort-select--disabled]="disabled()">
+  <app-pokeball-icon class="sort-select-icon" [size]="18" color="#ffffff" />
+
+  <label class="sort-select-label" [for]="selectId()">{{ label() }}</label>
+
+  <span class="sort-select-text" aria-hidden="true">{{ selectedText() }}</span>
+
+  <select
+    class="sort-select-control"
+    [id]="selectId()"
+    [value]="value()"
+    [disabled]="disabled()"
+    (change)="onChange($event)"
+  >
+    @for (option of options(); track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+
+  <span class="sort-select-caret" aria-hidden="true">▼</span>
+</div>

@@ -1,0 +1,26 @@
+<a
+  class="pokemon-card"
+  [routerLink]="['/pokemon', pokemon().name]"
+  [style.--pokemon-hover-bg]="firstTypeHoverColor()"
+  [attr.aria-label]="pokemonNameText() + ' details'"
+>
+  <div class="pokemon-image-container">
+    @if (pokemon().imageUrl) {
+      <img
+        class="pokemon-image"
+        [src]="pokemon().imageUrl"
+        [alt]="pokemonNameText() + ' image'"
+        loading="lazy"
+      />
+    }
+  </div>
+
+  <p class="pokemon-id">{{ pokemonIdText() }}</p>
+  <p class="pokemon-name">{{ pokemonNameText() }}</p>
+
+  <div class="pokemon-types">
+    @for (pokemonType of pokemon().types; track pokemonType) {
+      <app-pokemon-type-tag [type]="pokemonType" />
+    }
+  </div>
+</a>

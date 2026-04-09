@@ -1,0 +1,44 @@
+<section class="evolution-panel" aria-label="Pokemon evolutions">
+  <h2 class="evolution-title">Evolutions</h2>
+
+  <div class="evolution-flow">
+    @for (evolutionItem of evolutionItems(); track evolutionItem.id; let isLast = $last) {
+      <a
+        class="evolution-link"
+        [routerLink]="['/pokemon', evolutionItem.name]"
+        [attr.aria-current]="evolutionItem.isCurrent ? 'page' : null"
+        (click)="onEvolutionNavigate(evolutionItem.cryUrl)"
+      >
+        <article class="evolution-item">
+          <div
+            class="evolution-image-wrapper"
+            [class.evolution-image-wrapper--current]="evolutionItem.isCurrent"
+          >
+            @if (evolutionItem.imageUrl) {
+              <img
+                class="evolution-image"
+                [src]="evolutionItem.imageUrl"
+                [alt]="evolutionItem.nameLabel + ' evolution image'"
+                loading="lazy"
+              />
+            }
+          </div>
+
+          <p class="evolution-name">
+            {{ evolutionItem.nameLabel }} <span>{{ evolutionItem.idLabel }}</span>
+          </p>
+
+          <div class="evolution-types">
+            @for (evolutionType of evolutionItem.types; track evolutionType) {
+              <app-pokemon-type-tag [type]="evolutionType" />
+            }
+          </div>
+        </article>
+      </a>
+
+      @if (!isLast) {
+        <span class="evolution-arrow" aria-hidden="true">›</span>
+      }
+    }
+  </div>
+</section>

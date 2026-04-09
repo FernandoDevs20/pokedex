@@ -1,0 +1,8 @@
+<app-header (searchSubmitted)="onSearchSubmitted($event)" />
+<app-advance-search-bar (filtersChange)="onFiltersChange($event)" />
+
+<main class="page-content" aria-label="Pokemon list section">
+  <app-pokemon-list [searchTerm]="searchTerm()" [filters]="filters()" />
+</main>
+
+<app-scroll-top-fab />

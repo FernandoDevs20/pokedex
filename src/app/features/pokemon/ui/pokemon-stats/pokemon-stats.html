@@ -1,0 +1,19 @@
+<section class="stats-panel" aria-label="Pokemon stats">
+  <p class="stats-title">Stats</p>
+
+  <div class="stats-chart">
+    @for (statItem of statItems(); track statItem.key) {
+      <div class="stats-column">
+        <div class="stats-grid">
+          @for (blockIndex of blockIndexes; track blockIndex) {
+            <div
+              class="stats-cell"
+              [class.stats-cell--filled]="blockIndex < statItem.filledBlocks"
+            ></div>
+          }
+        </div>
+        <p class="stats-label">{{ statItem.label }}</p>
+      </div>
+    }
+  </div>
+</section>

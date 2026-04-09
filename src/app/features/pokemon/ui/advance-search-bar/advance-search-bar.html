@@ -1,0 +1,54 @@
+<section class="main-container">
+  <div
+    class="search-section"
+    [class.search-section--open]="isAdvancedSearchVisible()"
+  >
+    <div
+      class="search-content"
+      id="advanced-search-content"
+      [class.search-content--open]="isAdvancedSearchVisible()"
+      [attr.aria-hidden]="!isAdvancedSearchVisible()"
+    >
+      <div class="filters-row">
+        <app-sort-select
+          label="Filter by type"
+          [value]="selectedType()"
+          [options]="typeOptions"
+          (valueChange)="onTypeChange($event)"
+        />
+
+        <app-sort-select
+          label="Filter by weakness"
+          [value]="selectedWeakness()"
+          [options]="weaknessOptions"
+          (valueChange)="onWeaknessChange($event)"
+        />
+        <button class="clear-filters" type="button" (click)="onClearFilters()">
+          Clear filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="button-section"
+    type="button"
+    aria-controls="advanced-search-content"
+    [attr.aria-expanded]="isAdvancedSearchVisible()"
+    (click)="toggleAdvancedSearch()"
+  >
+    <span class="button-label">Show Advanced Search</span>
+
+    <svg
+      class="button-icon"
+      [class.button-icon--open]="isAdvancedSearchVisible()"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="10" cy="10" r="9" />
+      <path d="M6.2 8.2 10 12l3.8-3.8" />
+    </svg>
+  </button>
+</section>

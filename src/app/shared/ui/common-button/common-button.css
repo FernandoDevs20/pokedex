@@ -1,0 +1,100 @@
+:host {
+  display: inline-block;
+}
+
+.common-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: var(--common-button-padding, 0.55rem 1rem);
+  border: 0;
+  border-radius: var(--common-button-radius, 0.35rem);
+  background-color: var(--common-button-bg, #2f3136);
+  color: var(--common-button-color, #ffffff);
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.common-button:hover {
+  background-color: var(--common-button-bg-hover, #3b3e45);
+  transform: translateY(-1px);
+}
+
+.common-button:focus-visible {
+  outline: 0.12rem solid var(--common-button-focus, #ffffff);
+  outline-offset: 0.1rem;
+}
+
+.common-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.common-button__label {
+  line-height: 1.2;
+}
+
+.common-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.common-button__icon svg {
+  width: var(--common-button-icon-size, 2rem);
+  height: var(--common-button-icon-size, 2rem);
+  fill: currentColor;
+}
+
+.common-button__icon--rotate-hover {
+  transition: transform 220ms ease;
+}
+
+.common-button:hover .common-button__icon--rotate-hover,
+.common-button:focus-visible .common-button__icon--rotate-hover {
+  transform: rotate(90deg);
+}
+
+.common-button__icon--rotate-always {
+  animation: common-button-spin 1.2s linear infinite;
+}
+
+.common-button__icon--rotate-click {
+  animation: common-button-spin-once 360ms ease-in-out 1;
+}
+
+@keyframes common-button-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes common-button-spin-once {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .common-button,
+  .common-button__icon--rotate-hover {
+    transition: none;
+  }
+
+  .common-button__icon--rotate-always,
+  .common-button__icon--rotate-click {
+    animation: none;
+  }
+}

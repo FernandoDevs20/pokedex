@@ -1,0 +1,133 @@
+<div class="buttons-section">
+  <button
+    class="previous-pokemon"
+    type="button"
+    [disabled]="!canNavigateToPrevious()"
+    [style.--nav-hover-bg]="previousPokemonHoverColor()"
+    (click)="onPreviousPokemon()"
+  >
+    <span class="nav-button-content">
+      <span class="nav-button-icon" aria-hidden="true">
+        <span class="nav-button-icon-inner">‹</span>
+      </span>
+      <span class="nav-button-number">N.° {{ previousPokemonIdLabel() }}</span>
+      <span class="nav-button-name">{{ previousPokemonName() }}</span>
+    </span>
+  </button>
+  <button
+    class="next-pokemon"
+    type="button"
+    [disabled]="!canNavigateToNext()"
+    [style.--nav-hover-bg]="nextPokemonHoverColor()"
+    (click)="onNextPokemon()"
+  >
+    <span class="nav-button-content">
+      <span class="nav-button-name">{{ nextPokemonName() }}</span>
+      <span class="nav-button-number">N.° {{ nextPokemonIdLabel() }}</span>
+      <span class="nav-button-icon" aria-hidden="true">
+        <span class="nav-button-icon-inner">›</span>
+      </span>
+    </span>
+  </button>
+</div>
+
+<main class="detail-content">
+  <section class="main-container">
+    @if (error()) {
+      <p class="detail-error">{{ error() }}</p>
+    }
+
+    @if (pokemon()) {
+      <h1 class="pokemon-name">{{ pokemonName() }}<span style="color: gray;"> N.° {{ pokemonIdLabel() }}</span></h1>
+
+      <div class="detail-layout">
+        <section class="left-column">
+          <div class="pokemon-image-card">
+            @if (pokemonImageUrl()) {
+              <button
+                class="pokemon-image-button"
+                type="button"
+                (click)="onPokemonImageClick()"
+                [attr.aria-label]="'Play cry for ' + pokemonName()"
+              >
+                <img
+                  class="pokemon-image"
+                  [src]="pokemonImageUrl()!"
+                  [alt]="pokemonName() + ' official artwork'"
+                  loading="lazy"
+                />
+              </button>
+            }
+          </div>
+
+          <app-pokemon-stats [stats]="pokemon()!.stats" />
+        </section>
+
+        <section class="right-column">
+          <p class="pokemon-description">{{ pokemonDescription() }}</p>
+
+          <p class="versions-row">
+            Versiones:
+            <app-pokeball-icon class="version-pokeball version-pokeball--blue" [size]="18" />
+            <app-pokeball-icon class="version-pokeball version-pokeball--pink" [size]="18" />
+          </p>
+
+          <section class="pokemon-info-card">
+            <div class="info-row">
+              <span class="info-label">Height</span>
+              <span class="info-value">{{ pokemonHeightMeters() }} m</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Category</span>
+              <span class="info-value">{{ pokemonCategory() }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Weight</span>
+              <span class="info-value">{{ pokemonWeightKg() }} kg</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Abilities</span>
+              <span class="info-value">{{ pokemonAbilitiesText() }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Gender</span>
+              <span class="info-value">♂ ♀</span>
+            </div>
+          </section>
+
+          <section class="tags-block">
+            <h2 class="section-subtitle">Types</h2>
+            <div class="tags-row">
+              @for (pokemonType of pokemonTypes(); track pokemonType) {
+                <app-pokemon-type-tag [type]="pokemonType" size="large" />
+              }
+            </div>
+          </section>
+
+          <section class="tags-block">
+            <h2 class="section-subtitle">Weakness</h2>
+            <div class="tags-row">
+              @for (weaknessType of pokemonWeaknesses(); track weaknessType) {
+                <app-pokemon-type-tag [type]="weaknessType" size="large" />
+              }
+            </div>
+          </section>
+        </section>
+      </div>
+
+      @if (evolutions().length > 0) {
+        <app-pokemon-evolutions
+          [evolutions]="evolutions()"
+          [currentPokemonName]="pokemon()!.name"
+        />
+      }
+    }
+  </section>
+</main>
+
+<app-loader-overlay
+  [visible]="loading()"
+  imageSrc="/pokeball.png"
+  alt="Loading Pokemon detail"
+  [size]="90"
+/>

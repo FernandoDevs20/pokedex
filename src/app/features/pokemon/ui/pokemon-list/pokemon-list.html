@@ -1,0 +1,62 @@
+<section class="pokemon-list-container">
+  <div class="pokemon-list-actions">
+    <app-common-button
+      text="Surprise Me!"
+      [iconPath]="surpriseIconPath"
+      iconAnimation="rotate-hover-click"
+      [style.--common-button-bg]="'#31a8d8'"
+      [style.--common-button-bg-hover]="'#2896c2'"
+      [style.--common-button-focus]="'#1e6f90'"
+      [style.--common-button-padding]="'0.6rem 1.5rem'"
+      [style.--common-button-icon-size]="'1.65rem'"
+      (buttonPressed)="onSurpriseClick()"
+    />
+
+    <app-sort-select
+      [value]="sortMode()"
+      [options]="sortOptions"
+      (valueChange)="onSortModeChange($event)"
+    />
+  </div>
+
+  @if (error()) {
+    <p class="status-message status-message--error">{{ error() }}</p>
+  }
+
+  @if (shouldShowNoResults()) {
+    <p class="status-message">{{ noResultsMessage() }}</p>
+  }
+
+  @if (isEmpty()) {
+    <p class="status-message">No Pokemon data available.</p>
+  }
+
+  @if (pokemons().length > 0) {
+    <div class="pokemon-grid">
+      @for (pokemon of displayedPokemons(); track trackPokemonById($index, pokemon)) {
+        <app-pokemon-card [pokemon]="pokemon" />
+      }
+    </div>
+  }
+
+  @if (shouldShowLoadMoreButton()) {
+    <div class="pokemon-list-load-more">
+      <app-common-button
+        [text]="loadMoreButtonText()"
+        [disabled]="!canLoadMore()"
+        [style.--common-button-bg]="'#31a8d8'"
+        [style.--common-button-bg-hover]="'#2896c2'"
+        [style.--common-button-focus]="'#1e6f90'"
+        [style.--common-button-padding]="'0.6rem 1.3rem'"
+        (buttonPressed)="onLoadMorePokemons()"
+      />
+    </div>
+  }
+
+  <app-loader-overlay
+    [visible]="isListLoading()"
+    imageSrc="/pokeball.png"
+    alt="Loading Pokemon data"
+    [size]="90"
+  />
+</section>

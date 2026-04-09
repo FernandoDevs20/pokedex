@@ -1,0 +1,123 @@
+:host {
+  display: block;
+}
+
+.evolution-panel {
+  margin-top: 1rem;
+  padding: 0.8rem 0.9rem 1rem;
+  border-radius: 0.7rem;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #515151 0,
+      #515151 14px,
+      #565656 14px,
+      #565656 28px
+    );
+  color: #ffffff;
+}
+
+.evolution-title {
+  margin: 0 0 0.65rem;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.evolution-flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.evolution-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+.evolution-link:focus-visible {
+  outline: 0.18rem solid #ffffff;
+  outline-offset: 0.25rem;
+  border-radius: 0.6rem;
+}
+
+.evolution-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(10rem, 100%);
+}
+
+.evolution-image-wrapper {
+  width: 8.2rem;
+  height: 8.2rem;
+  border-radius: 50%;
+  border: 0.3rem solid #ffffff;
+  background: #4b4b4b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 220ms ease, border-color 220ms ease;
+}
+
+.evolution-link:hover .evolution-image-wrapper,
+.evolution-link:focus-visible .evolution-image-wrapper {
+  transform: scale(1.06);
+}
+
+.evolution-image-wrapper--current {
+  border-color: #39a6d1;
+}
+
+.evolution-image {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+}
+
+.evolution-name {
+  margin: 0.7rem 0 0.35rem;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.evolution-name span {
+  color: #bcbcbc;
+}
+
+.evolution-types {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.evolution-arrow {
+  font-size: 5.2rem;
+  line-height: 1;
+  color: #ffffff;
+  margin-top: -1.2rem;
+}
+
+@media (max-width: 58rem) {
+  .evolution-flow {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.65rem;
+  }
+
+  .evolution-item {
+    width: 100%;
+    max-width: 12rem;
+  }
+
+  .evolution-arrow {
+    display: block;
+    font-size: 4.2rem;
+    margin: 0;
+    transform: rotate(90deg);
+    transform-origin: center;
+  }
+}

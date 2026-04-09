@@ -1,0 +1,19 @@
+@if (isVisible()) {
+  <button
+    class="scroll-top-fab"
+    type="button"
+    (click)="onScrollToTop()"
+    aria-label="Scroll to top"
+  >
+    <svg
+      class="scroll-top-fab__icon"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M12 5 4.5 12.5l1.4 1.4L11 8.8V19h2V8.8l5.1 5.1 1.4-1.4Z" />
+    </svg>
+  </button>
+}
+

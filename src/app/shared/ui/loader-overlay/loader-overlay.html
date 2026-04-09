@@ -1,0 +1,17 @@
+<div
+  class="loading-overlay"
+  [class.loading-overlay--visible]="visible()"
+  role="status"
+  aria-live="polite"
+  [attr.aria-hidden]="!visible()"
+  aria-label="Loading"
+>
+  <img
+    [ngSrc]="imageSrc()"
+    [width]="size()"
+    [height]="size()"
+    [alt]="alt()"
+    class="loading-pokeball"
+    priority
+  />
+</div>

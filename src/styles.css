@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #ffffff 0,
+      #ffffff 18px,
+      #f3f3f3 18px,
+      #f3f3f3 36px
+    );
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label,
+span,
+a,
+li,
+small,
+input,
+button,
+textarea,
+select {
+  font-weight: 00;
+}
+
+strong,
+b {
+  font-weight: 500;
+}

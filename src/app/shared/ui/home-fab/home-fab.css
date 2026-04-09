@@ -1,0 +1,50 @@
+:host {
+  position: fixed;
+  right: calc(1.25rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+.home-fab {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 999px;
+  background: #2f2f2f;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 22%);
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.home-fab:hover {
+  background: #1f1f1f;
+  transform: translateY(-2px);
+}
+
+.home-fab:focus-visible {
+  outline: 0.2rem solid #ee8130;
+  outline-offset: 0.25rem;
+}
+
+.home-fab__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: currentColor;
+}
+
+@media (max-width: 30rem) {
+  :host {
+    right: calc(0.85rem + env(safe-area-inset-right, 0px));
+    bottom: calc(0.85rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .home-fab {
+    width: 2.85rem;
+    height: 2.85rem;
+  }
+}
+

@@ -1,0 +1,23 @@
+<button
+  class="common-button"
+  [attr.type]="buttonType()"
+  [disabled]="disabled()"
+  (click)="onClick()"
+>
+  @if (hasIcon()) {
+    <span
+      class="common-button__icon"
+      [class.common-button__icon--rotate-hover]="shouldRotateOnHover()"
+      [class.common-button__icon--rotate-always]="iconAnimation() === 'rotate-always'"
+      [class.common-button__icon--rotate-click]="isClickRotating()"
+      (animationend)="onIconAnimationEnd()"
+      aria-hidden="true"
+    >
+      <svg [attr.viewBox]="iconViewBox()" focusable="false" aria-hidden="true">
+        <path [attr.d]="iconPath()" />
+      </svg>
+    </span>
+  }
+
+  <span class="common-button__label">{{ text() }}</span>
+</button>

@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  width: 100%;
+  background: #2f3136;
+}
+
+.header-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem);
+  gap: 2rem;
+  align-items: start;
+  width: min(84rem, 100%);
+  padding: 1.5rem 1.25rem 1.75rem;
+  color: #ffffff;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.search-panel {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.field-label {
+  color: #f2f2f2;
+  font-size: clamp(1.2rem, 0.6rem + 1vw, 1.5rem);
+  font-weight: 300;
+  line-height: 1.15;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.search-input {
+  width: 100%;
+  min-width: 0;
+  height: 3rem;
+  border: 0.1rem solid #73757b;
+  border-radius: 0.3rem;
+  padding-inline: 0.85rem;
+  background: #f4f5f6;
+  font-size: 1.2rem;
+  color: #151515;
+}
+
+.search-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3em;
+  border: 0;
+  border-radius: 0.35rem;
+  background: #f36a3d;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.search-button:hover{
+  background: #d93f0c;
+  transform: translateY(-1px);
+}
+
+.search-button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
+.support-text {
+  margin: 0;
+  max-width: 40rem;
+  color: #f0f0f0;
+  font-size: clamp(0.75rem, 0.52rem + 0.35vw, 1rem);
+  line-height: 1.35;
+}
+
+.info-panel {
+  padding: 1rem 1.15rem;
+  border-radius: 0.35rem;
+  background: #1fa836;
+  color: #ffffff;
+  font-size: clamp(0.75rem, 0.2rem + 1vw, 1.2rem);;
+  line-height: 1.35;
+}
+
+.search-input:focus-visible {
+  outline: 0.08rem solid #f36a3d;
+  outline-offset: 0.05rem;
+  border-color: #f36a3d;
+  border-width: 0.08rem;
+}
+
+.search-button:focus-visible {
+  outline: 0.2rem solid #ffffff;
+  outline-offset: 0.12rem;
+}
+
+@media (max-width: 64rem) {
+  .header-shell {
+    width: 80%;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .search-row {
+    gap: 0.55rem;
+  }
+
+  .search-input,
+  .search-button {
+    height: 2.8rem;
+  }
+
+   .search-input{
+    width: 60%;
+  }
+
+  .search-button {
+    width: 3.25rem;
+  }
+
+  .search-button svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .info-panel {
+    width: 80%;
+  }
+  
+}
