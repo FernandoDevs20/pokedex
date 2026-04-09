@@ -7,6 +7,7 @@
   padding-inline: 0.8rem;
   background-color: rgb(255, 255, 255);
   padding-top: 2rem;
+  min-height: 100vh;
 }
 
 .pokemon-list-actions {
