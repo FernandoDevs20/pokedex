@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class LoaderOverlay {
   readonly visible = input(false);
-  readonly imageSrc = input('/pokeball.png');
+  readonly imageSrc = input('pokeball.png');
   readonly alt = input('Loading content');
   readonly size = input(90);
 }
