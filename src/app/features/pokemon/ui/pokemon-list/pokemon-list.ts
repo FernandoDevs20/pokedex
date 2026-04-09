@@ -15,6 +15,7 @@ import {
   map,
   mergeMap,
   Observable,
+  of,
   switchMap,
   toArray,
 } from 'rxjs';
@@ -74,6 +75,7 @@ export class PokemonList {
   protected readonly pokemons = signal<PokemonCardModel[]>([]);
   protected readonly filterCatalog = signal<PokemonCardModel[]>([]);
   protected readonly visibleCount = signal(0);
+  protected readonly surpriseCards = signal<PokemonCardModel[] | null>(null);
 
   protected readonly loading = signal(false);
   protected readonly loadingMore = signal(false);
@@ -104,6 +106,7 @@ export class PokemonList {
       this.sortMode() !== ''
     );
   });
+  protected readonly isSurpriseMode = computed(() => this.surpriseCards() !== null);
 
   private readonly sourceCards = computed(() => {
     if (!this.isDiscoveryMode()) {
@@ -134,15 +137,24 @@ export class PokemonList {
     return this.filterPokemonCards(cards, term, filters);
   });
 
-  protected readonly displayedPokemons = computed(() =>
-    this.filteredPokemons().slice(0, this.visibleCount()),
-  );
+  protected readonly displayedPokemons = computed(() => {
+    const surpriseCards = this.surpriseCards();
+    if (surpriseCards) {
+      return surpriseCards;
+    }
+
+    return this.filteredPokemons().slice(0, this.visibleCount());
+  });
 
   protected readonly isEmpty = computed(
     () => !this.loading() && !this.error() && !this.isDiscoveryMode() && this.pokemons().length === 0,
   );
 
   protected readonly shouldShowNoResults = computed(() => {
+    if (this.isSurpriseMode()) {
+      return false;
+    }
+
     if (!this.isDiscoveryMode()) {
       return false;
     }
@@ -164,6 +176,10 @@ export class PokemonList {
   });
 
   protected readonly shouldShowLoadMoreButton = computed(() => {
+    if (this.isSurpriseMode()) {
+      return false;
+    }
+
     const cardsShown = this.displayedPokemons().length;
     const cardsAvailable = this.filteredPokemons().length;
 
@@ -219,15 +235,43 @@ export class PokemonList {
 
       this.visibleCount.set(this.pageSize);
     });
+
+    effect(() => {
+      this.normalizedSearch();
+      this.normalizedFilters();
+      this.sortMode();
+      this.surpriseCards.set(null);
+    });
   }
 
   protected onSurpriseClick(): void {
-    const pokemonCards = [...this.pokemons()];
-    if (pokemonCards.length === 0) {
+    if (this.loading() || this.loadingMore() || this.loadingFilterCatalog()) {
       return;
     }
 
-    this.pokemons.set(pokemonCards.sort(() => Math.random() - 0.5));
+    this.loadingMore.set(true);
+    this.error.set(null);
+    this.surpriseCards.set(null);
+
+    this.getFirst150Catalog()
+      .pipe(
+        finalize(() => this.loadingMore.set(false)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: (cards) => {
+          if (cards.length === 0) {
+            this.error.set('No se encontraron Pokemons para Surprise Me.');
+            return;
+          }
+
+          this.sortMode.set('');
+          this.surpriseCards.set(this.pickRandomPokemons(cards, this.pageSize));
+        },
+        error: () => {
+          this.error.set('No se pudieron obtener Pokemons aleatorios. Intenta nuevamente.');
+        },
+      });
   }
 
   protected trackPokemonById(_index: number, pokemon: PokemonCardModel): number {
@@ -342,6 +386,21 @@ export class PokemonList {
       });
   }
 
+  private getFirst150Catalog(): Observable<PokemonCardModel[]> {
+    const cached = this.filterCatalog();
+    if (cached.length >= this.filterCatalogSize) {
+      return of(cached);
+    }
+
+    return this.getPokemonCardsPage(this.filterCatalogSize, 0).pipe(
+      map(({ cards }) => cards),
+      map((cards) => {
+        this.filterCatalog.set(cards);
+        return cards;
+      }),
+    );
+  }
+
   private isPokemonSortMode(value: string): value is PokemonSortMode {
     return (
       value === '' ||
@@ -410,6 +469,22 @@ export class PokemonList {
     const seenIds = new Set(currentCards.map((pokemon) => pokemon.id));
     const uniqueIncomingCards = incomingCards.filter((pokemon) => !seenIds.has(pokemon.id));
     return [...currentCards, ...uniqueIncomingCards];
+  }
+
+  private pickRandomPokemons(
+    sourceCards: PokemonCardModel[],
+    amount: number,
+  ): PokemonCardModel[] {
+    const shuffledCards = [...sourceCards];
+
+    for (let index = shuffledCards.length - 1; index > 0; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * (index + 1));
+      const currentCard = shuffledCards[index];
+      shuffledCards[index] = shuffledCards[randomIndex];
+      shuffledCards[randomIndex] = currentCard;
+    }
+
+    return shuffledCards.slice(0, Math.min(amount, shuffledCards.length));
   }
 
   private toPokemonCardModel(pokemonDetailResponse: PokemonDetailResponse): PokemonCardModel {
