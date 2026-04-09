@@ -36,12 +36,12 @@ jobs:
         run: npm run build:gh-pages
 
       - name: SPA fallback
-        run: cp dist/pokedex/browser/index.html dist/pokedex/browser/404.html
+        run: cp dist/gh-pages/index.html dist/gh-pages/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/pokedex/browser
+          path: dist/gh-pages
 
   deploy:
     needs: build
