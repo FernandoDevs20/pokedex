@@ -115,7 +115,7 @@
 
 .main-container {
   max-width: 75rem;
-  margin: 0 auto;
+  margin: 1rem auto;
 }
 
 .pokemon-name {
@@ -163,7 +163,7 @@
 }
 
 .pokemon-image-button:focus-visible {
-  outline: 0.2rem solid #ee8130;
+  outline: 0.2rem solid var(--color-orange-global);
   outline-offset: 0.3rem;
   border-radius: 0.7rem;
 }
@@ -186,7 +186,7 @@
 .pokemon-description {
   margin: 0;
   color: #2f2f2f;
-  font-size: 1.5rem;;
+  font-size: 1.5rem;
   line-height: 1.35;
 }
 
@@ -194,9 +194,10 @@
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
   color: #2f2f2f;
-  font-size: 1.5rem;;
+  font-size: 1.5rem;
+  line-height: 1;
 }
 
 .version-pokeball {
@@ -208,8 +209,54 @@
   background: transparent;
   box-shadow: none;
   filter: drop-shadow(0 1px 0 rgb(0 0 0 / 25%)) drop-shadow(0 0 6px rgb(255 255 255 / 18%));
-  transition: transform 180ms ease, filter 180ms ease;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
 }
+
+.version-button {
+  border: 0.2rem solid transparent;
+  background: transparent;
+  width: 2.45rem;
+  height: 2.45rem;
+  padding: 0;
+  flex: 0 0 2.45rem;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.version-button--active {
+  opacity: 1;
+  background-color: rgb(255 255 255 / 14%);
+  box-shadow:
+    0 0 0 0.14rem rgb(0 0 0 / 16%),
+    0 0 0.5rem rgb(255 255 255 / 35%);
+}
+
+.version-button--blue.version-button--active {
+  border-color: #1e7ab7;
+   transform:  scale(1.08);
+}
+
+.version-button--pink.version-button--active {
+  border-color: #dd4f78;
+  transform:  scale(1.08);
+}
+
+.version-button:not(.version-button--active):hover {
+  opacity: 0.9;
+}
+
 
 .version-pokeball:hover {
   transform: translateY(-1px) scale(1.08);
@@ -260,7 +307,7 @@
 .section-subtitle {
   margin: 0;
   color: #2f2f2f;
-  font-size: 1.5rem;;
+  font-size: 1.5rem;
 }
 
 .tags-row {
@@ -285,6 +332,7 @@
   .right-column {
     flex-basis: 100%;
     min-width: 0;
+    margin: 0 auto;
   }
 
   .pokemon-name {
@@ -295,8 +343,8 @@
     min-height: 18rem;
   }
   .detail-content {
-  width: 90%;
-  margin-top: -5rem;
-  padding: 4.6rem 0.3rem 2.2rem;
-}
+    width: 90%;
+    margin-top: -5rem;
+    padding: 4.6rem 0.3rem 2.2rem;
+  }
 }

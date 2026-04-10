@@ -4,7 +4,7 @@
 }
 
 .sort-select {
-  display: inline-flex;
+  display: flex;
   width: 100%;
   box-sizing: border-box;
   align-items: center;
@@ -23,6 +23,7 @@
 
 .sort-select-icon {
   flex: 0 0 auto;
+  margin-top: 0.25rem;
 }
 
 .sort-select-label {
@@ -55,7 +56,7 @@
 }
 
 .sort-select-control:focus-visible {
-  outline: 0.18rem solid #ee8130;
+  outline: 0.18rem solid var(--color-orange-global);
   outline-offset: 0.22rem;
   border-radius: 0.25rem;
 }
