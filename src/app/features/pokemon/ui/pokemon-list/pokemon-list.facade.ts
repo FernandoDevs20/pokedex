@@ -162,10 +162,14 @@ export class PokemonListFacade {
     });
 
     effect(() => {
-      this.normalizedSearch();
-      this.normalizedFilters();
-      this.sortMode();
-      this.surpriseCards.set(null);
+      const search = this.normalizedSearch();
+      const filters = this.normalizedFilters();
+      const sortMode = this.sortMode();
+      const hasActiveDiscoveryCriteria = !!search || !!filters.type || !!filters.weakness || !!sortMode;
+
+      if (hasActiveDiscoveryCriteria) {
+        this.surpriseCards.set(null);
+      }
     });
   }
 

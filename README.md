@@ -104,7 +104,7 @@ src/
 ```
 
 ## Tech decisions
-- **Angular 21 (standalone components + signals):** I chose it as the main framework to practice, in a real project, the stack used by the company I am applying to and to strengthen component-based architecture with reactive state.
+- **Angular 21 (standalone components + signals):** I chose it as the main framework to practice, in a real project, to strengthen my frontend skills in a component-based framework with reactive state management.
 - **RxJS:** I used it to better learn asynchronous data flow handling (API requests, transformations, and data composition).
 - **Angular Router:** I used it to practice clear and maintainable view navigation (`home` and `detail` routes).
 - **HttpClient:** I chose it for typed API consumption aligned with Angular official best practices.

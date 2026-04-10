@@ -1,8 +1,16 @@
-<app-header (searchSubmitted)="onSearchSubmitted($event)" />
+<app-header
+  [searchTerm]="searchTerm()"
+  [resetNonce]="searchResetNonce()"
+  (searchSubmitted)="onSearchSubmitted($event)"
+/>
 <app-advance-search-bar (filtersChange)="onFiltersChange($event)" />
 
 <main class="page-content" aria-label="Pokemon list section">
-  <app-pokemon-list [searchTerm]="searchTerm()" [filters]="filters()" />
+  <app-pokemon-list
+    [searchTerm]="searchTerm()"
+    [filters]="filters()"
+    (surpriseRequested)="onSurpriseRequested()"
+  />
 </main>
 
 <app-scroll-top-fab />

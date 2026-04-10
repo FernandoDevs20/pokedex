@@ -8,10 +8,10 @@ export type NormalizedPokemonFilters = Readonly<{ type: string; weakness: string
 
 export const POKEMON_SORT_OPTIONS: ReadonlyArray<SortSelectOption> = [
   { value: '', label: 'Sort results' },
-  { value: 'id-asc', label: 'ID (asc)' },
-  { value: 'id-desc', label: 'ID (desc)' },
-  { value: 'name-asc', label: 'Name (A-Z)' },
-  { value: 'name-desc', label: 'Name (Z-A)' },
+  { value: 'id-asc', label: 'Lowest Number (First)' },
+  { value: 'id-desc', label: 'Highest Number (First)' },
+  { value: 'name-asc', label: 'A-Z' },
+  { value: 'name-desc', label: 'Z-A' },
 ];
 
 export const POKEMON_SORT_MODES = new Set<PokemonSortMode>([

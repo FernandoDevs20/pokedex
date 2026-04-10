@@ -19,6 +19,7 @@ import {
 export class PokemonHome {
   private readonly title = inject(Title);
   protected readonly searchTerm = signal('');
+  protected readonly searchResetNonce = signal(0);
   protected readonly filters = signal<PokemonAdvancedFilters>(DEFAULT_POKEMON_FILTERS);
 
   constructor() {
@@ -31,5 +32,10 @@ export class PokemonHome {
 
   protected onFiltersChange(filters: PokemonAdvancedFilters): void {
     this.filters.set(filters);
+  }
+
+  protected onSurpriseRequested(): void {
+    this.searchTerm.set('');
+    this.searchResetNonce.update((value) => value + 1);
   }
 }

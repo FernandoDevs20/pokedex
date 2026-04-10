@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 import { CommonButton } from '../../../../shared/ui/common-button/common-button';
 import { LoaderOverlay } from '../../../../shared/ui/loader-overlay/loader-overlay';
 import { SortSelect } from '../../../../shared/ui/sort-select/sort-select';
@@ -23,6 +23,7 @@ export class PokemonList {
 
   readonly searchTerm = input<string>('');
   readonly filters = input<PokemonAdvancedFilters>(DEFAULT_POKEMON_FILTERS);
+  readonly surpriseRequested = output<void>();
 
   protected readonly pokemons = this.facade.pokemons;
   protected readonly error = this.facade.error;
@@ -46,6 +47,7 @@ export class PokemonList {
   }
 
   protected onSurpriseClick(): void {
+    this.surpriseRequested.emit();
     this.facade.onSurpriseClick();
   }
 
