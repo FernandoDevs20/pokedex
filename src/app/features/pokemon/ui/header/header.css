@@ -5,19 +5,24 @@
 }
 
 .header-shell {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem);
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   gap: 2rem;
   align-items: start;
   width: min(84rem, 100%);
   padding: 1.5rem 1.25rem 1.75rem;
+  box-sizing: border-box;
   color: #ffffff;
   max-width: 60rem;
   margin: 0 auto;
 }
 
 .search-panel {
-  display: grid;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
   gap: 0.65rem;
 }
 
@@ -38,6 +43,7 @@
   width: 100%;
   min-width: 0;
   height: 3rem;
+  box-sizing: border-box;
   border: 0.1rem solid #73757b;
   border-radius: 0.3rem;
   padding-inline: 0.85rem;
@@ -82,6 +88,10 @@
 }
 
 .info-panel {
+  flex: 0 1 28rem;
+  min-width: 18rem;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 1rem 1.15rem;
   border-radius: 0.35rem;
   background: #4dad5b;
@@ -104,9 +114,11 @@
 
 @media (max-width: 64rem) {
   .header-shell {
-    width: 80%;
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    width: 100%;
     gap: 1rem;
+    padding: 1rem;
+    overflow-x: clip;
   }
 
   .search-row {
@@ -119,11 +131,13 @@
   }
 
   .search-input {
-    width: 60%;
+    flex: 1 1 auto;
+    width: auto;
   }
 
   .search-button {
     width: 3.25rem;
+    flex: 0 0 auto;
   }
 
   .search-button svg {
@@ -132,6 +146,8 @@
   }
 
   .info-panel {
-    width: 80%;
+    width: 100%;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 }
