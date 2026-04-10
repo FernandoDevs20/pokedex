@@ -66,6 +66,9 @@ const POKEMON_SORT_COMPARATORS = {
   (a: PokemonCardModel, b: PokemonCardModel) => number
 >;
 
+const SURPRISE_ICON_PATH =
+  'M12 6V3L8 7l4 4V8c2.21 0 4 1.79 4 4 0 .7-.18 1.37-.5 1.95l1.46 1.46A5.96 5.96 0 0 0 18 12c0-3.31-2.69-6-6-6Zm-4.5 4.05L6.04 8.59A5.96 5.96 0 0 0 6 12c0 3.31 2.69 6 6 6v3l4-4-4-4v3c-2.21 0-4-1.79-4-4 0-.7.18-1.37.5-1.95Z';
+
 @Component({
   selector: 'app-pokemon-list',
   imports: [CommonButton, PokemonCard, LoaderOverlay, SortSelect],
@@ -212,8 +215,7 @@ export class PokemonList {
 
   protected readonly isListLoading = computed(() => this.isBusy());
 
-  protected readonly surpriseIconPath =
-    'M12 6V3L8 7l4 4V8c2.21 0 4 1.79 4 4 0 .7-.18 1.37-.5 1.95l1.46 1.46A5.96 5.96 0 0 0 18 12c0-3.31-2.69-6-6-6Zm-4.5 4.05L6.04 8.59A5.96 5.96 0 0 0 6 12c0 3.31 2.69 6 6 6v3l4-4-4-4v3c-2.21 0-4-1.79-4-4 0-.7.18-1.37.5-1.95Z';
+  protected readonly surpriseIconPath = SURPRISE_ICON_PATH;
 
   constructor() {
     this.loadInitialPokemons();
