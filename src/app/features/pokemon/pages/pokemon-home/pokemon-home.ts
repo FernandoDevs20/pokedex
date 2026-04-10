@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AdvanceSearchBar } from '../../ui/advance-search-bar/advance-search-bar';
 import { Header } from '../../ui/header/header';
 import { PokemonList } from '../../ui/pokemon-list/pokemon-list';
@@ -13,8 +14,13 @@ import { DEFAULT_POKEMON_FILTERS, PokemonAdvancedFilters } from '../../data-acce
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokemonHome {
+  private readonly title = inject(Title);
   protected readonly searchTerm = signal('');
   protected readonly filters = signal<PokemonAdvancedFilters>(DEFAULT_POKEMON_FILTERS);
+
+  constructor() {
+    this.title.setTitle('Pokedex | Discover and explore Pokemon');
+  }
 
   protected onSearchSubmitted(term: string): void {
     this.searchTerm.set(term);
