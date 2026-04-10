@@ -38,7 +38,9 @@
     }
 
     @if (pokemon()) {
-      <h1 class="pokemon-name">{{ pokemonName() }}<span style="color: gray;"> N.° {{ pokemonIdLabel() }}</span></h1>
+      <h1 class="pokemon-name">
+        {{ pokemonName() }}<span style="color: gray"> N.° {{ pokemonIdLabel() }}</span>
+      </h1>
 
       <div class="detail-layout">
         <section class="left-column">
@@ -68,8 +70,26 @@
 
           <p class="versions-row">
             Versiones:
-            <app-pokeball-icon class="version-pokeball version-pokeball--blue" [size]="18" />
-            <app-pokeball-icon class="version-pokeball version-pokeball--pink" [size]="18" />
+            <button
+              class="version-button version-button--blue"
+              type="button"
+              [class.version-button--active]="isBlueVersionSelected()"
+              [attr.aria-pressed]="isBlueVersionSelected()"
+              aria-label="Mostrar descripción 1"
+              (click)="onBlueVersionClick()"
+            >
+              <app-pokeball-icon class="version-pokeball version-pokeball--blue" [size]="22" />
+            </button>
+            <button
+              class="version-button version-button--pink"
+              type="button"
+              [class.version-button--active]="isPinkVersionSelected()"
+              [attr.aria-pressed]="isPinkVersionSelected()"
+              aria-label="Mostrar descripción 2"
+              (click)="onPinkVersionClick()"
+            >
+              <app-pokeball-icon class="version-pokeball version-pokeball--pink" [size]="22" />
+            </button>
           </p>
 
           <section class="pokemon-info-card">
@@ -91,7 +111,7 @@
             </div>
             <div class="info-row">
               <span class="info-label">Gender</span>
-              <span class="info-value">♂ ♀</span>
+              <span class="info-value">{{ pokemonGenderText() }}</span>
             </div>
           </section>
 

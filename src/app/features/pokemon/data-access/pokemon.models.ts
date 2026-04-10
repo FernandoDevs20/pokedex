@@ -88,9 +88,19 @@ export interface PokemonCardModel {
 export interface PokemonSpeciesResponse {
   id: number;
   name: string;
+  gender_rate: number;
   evolution_chain: {
     url: string;
   };
+  genera: Array<{
+    genus: string;
+    language: NamedApiResource;
+  }>;
+  flavor_text_entries: Array<{
+    flavor_text: string;
+    language: NamedApiResource;
+    version: NamedApiResource;
+  }>;
 }
 
 export interface EvolutionChainLink {
