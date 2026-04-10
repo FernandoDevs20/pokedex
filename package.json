@@ -8,6 +8,8 @@
     "build:gh-pages": "ng build --configuration production --output-mode static --base-href /pokedex/ --output-path dist/gh-pages",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "format": "prettier --write \"**/*.{ts,js,mjs,cjs,json,css,scss,html,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,mjs,cjs,json,css,scss,html,md,yml,yaml}\"",
     "serve:ssr:pokedex": "node dist/pokedex/server/server.mjs"
   },
   "private": true,

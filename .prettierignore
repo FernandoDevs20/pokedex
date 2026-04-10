@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+.angular
+.cache
+tmp
+public
+*.log
+pokemon.json
