@@ -23,11 +23,11 @@ export const POKEMON_SORT_MODES = new Set<PokemonSortMode>([
 ]);
 
 export const POKEMON_ERROR_MESSAGES = {
-  initialLoad: 'No se pudieron cargar los Pokemons. Intenta nuevamente.',
-  loadMore: 'No se pudieron cargar más Pokemons. Intenta nuevamente.',
-  filterCatalog: 'No se pudo cargar el catálogo de filtros (primeros 150).',
-  surpriseEmpty: 'No se encontraron Pokemons para Surprise Me.',
-  surpriseLoad: 'No se pudieron obtener Pokemons aleatorios. Intenta nuevamente.',
+  initialLoad: 'Could not load Pokemon. Please try again.',
+  loadMore: 'Could not load more Pokemon. Please try again.',
+  filterCatalog: 'Could not load filter catalog (first 150).',
+  surpriseEmpty: 'No Pokemon found for Surprise Me.',
+  surpriseLoad: 'Could not fetch random Pokemon. Please try again.',
 } as const;
 
 export const POKEMON_SORT_COMPARATORS = {
