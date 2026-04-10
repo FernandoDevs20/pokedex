@@ -128,8 +128,11 @@ export class PokemonDetail {
       return '';
     }
 
-    const visibleAbilities = pokemonDetail.abilities.filter((abilitySlot) => !abilitySlot.is_hidden);
-    const sourceAbilities = visibleAbilities.length > 0 ? visibleAbilities : pokemonDetail.abilities;
+    const visibleAbilities = pokemonDetail.abilities.filter(
+      (abilitySlot) => !abilitySlot.is_hidden,
+    );
+    const sourceAbilities =
+      visibleAbilities.length > 0 ? visibleAbilities : pokemonDetail.abilities;
 
     return sourceAbilities
       .map((abilitySlot) => abilitySlot.ability.name)
@@ -345,21 +348,23 @@ export class PokemonDetail {
   }
 
   private loadEvolutionCardsFromSpecies(pokemonSpeciesResponse: PokemonSpeciesResponse) {
-    return this.pokemonApiService.getEvolutionChainByUrl(pokemonSpeciesResponse.evolution_chain.url).pipe(
-      map((evolutionChainResponse) => this.extractEvolutionNames(evolutionChainResponse.chain)),
-      switchMap((evolutionNames) =>
-        forkJoin(
-          evolutionNames.map((evolutionName) =>
-            this.pokemonApiService.getPokemonDetail(evolutionName),
+    return this.pokemonApiService
+      .getEvolutionChainByUrl(pokemonSpeciesResponse.evolution_chain.url)
+      .pipe(
+        map((evolutionChainResponse) => this.extractEvolutionNames(evolutionChainResponse.chain)),
+        switchMap((evolutionNames) =>
+          forkJoin(
+            evolutionNames.map((evolutionName) =>
+              this.pokemonApiService.getPokemonDetail(evolutionName),
+            ),
           ),
         ),
-      ),
-      map((pokemonDetails) =>
-        pokemonDetails
-          .sort((a, b) => a.id - b.id)
-          .map((pokemonDetail) => this.toPokemonCardModel(pokemonDetail)),
-      ),
-    );
+        map((pokemonDetails) =>
+          pokemonDetails
+            .sort((a, b) => a.id - b.id)
+            .map((pokemonDetail) => this.toPokemonCardModel(pokemonDetail)),
+        ),
+      );
   }
 
   private extractUniqueFlavorTextsByLanguage(

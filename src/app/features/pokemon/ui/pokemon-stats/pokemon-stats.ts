@@ -1,13 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { PokemonStat } from '../../data-access/pokemon.models';
 
-type StatKey =
-  | 'hp'
-  | 'attack'
-  | 'defense'
-  | 'special-attack'
-  | 'special-defense'
-  | 'speed';
+type StatKey = 'hp' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
 
 interface StatDescriptor {
   key: StatKey;

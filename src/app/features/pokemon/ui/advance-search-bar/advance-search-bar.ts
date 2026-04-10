@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  output,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
 import { SortSelect, SortSelectOption } from '../../../../shared/ui/sort-select/sort-select';
 import {
   DEFAULT_POKEMON_FILTERS,

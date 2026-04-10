@@ -9,7 +9,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { finalize, from, map, mergeMap, Observable, of, switchMap, toArray } from 'rxjs';
+import { finalize, from, map, mergeMap, Observable, of, switchMap, tap, toArray } from 'rxjs';
 import { CommonButton } from '../../../../shared/ui/common-button/common-button';
 import { LoaderOverlay } from '../../../../shared/ui/loader-overlay/loader-overlay';
 import { SortSelect, SortSelectOption } from '../../../../shared/ui/sort-select/sort-select';
@@ -24,6 +24,7 @@ import { TYPE_WEAKNESS_MAP } from '../../domain/pokemon-type.constants';
 
 type PokemonSortMode = '' | 'id-asc' | 'id-desc' | 'name-asc' | 'name-desc';
 type PokemonSortComparatorMode = Exclude<PokemonSortMode, ''>;
+type NormalizedPokemonFilters = Readonly<{ type: string; weakness: string }>;
 
 type PokemonCardsPage = {
   count: number;
@@ -38,6 +39,22 @@ const POKEMON_SORT_OPTIONS: ReadonlyArray<SortSelectOption> = [
   { value: 'name-asc', label: 'Name (A-Z)' },
   { value: 'name-desc', label: 'Name (Z-A)' },
 ];
+
+const POKEMON_SORT_MODES = new Set<PokemonSortMode>([
+  '',
+  'id-asc',
+  'id-desc',
+  'name-asc',
+  'name-desc',
+]);
+
+const POKEMON_ERROR_MESSAGES = {
+  initialLoad: 'No se pudieron cargar los Pokemons. Intenta nuevamente.',
+  loadMore: 'No se pudieron cargar más Pokemons. Intenta nuevamente.',
+  filterCatalog: 'No se pudo cargar el catálogo de filtros (primeros 150).',
+  surpriseEmpty: 'No se encontraron Pokemons para Surprise Me.',
+  surpriseLoad: 'No se pudieron obtener Pokemons aleatorios. Intenta nuevamente.',
+} as const;
 
 const POKEMON_SORT_COMPARATORS = {
   'id-asc': (a: PokemonCardModel, b: PokemonCardModel) => a.id - b.id,
@@ -83,7 +100,7 @@ export class PokemonList {
   protected readonly sortOptions = POKEMON_SORT_OPTIONS;
 
   protected readonly normalizedSearch = computed(() => this.searchTerm().trim().toLowerCase());
-  protected readonly normalizedFilters = computed(() => {
+  protected readonly normalizedFilters = computed<NormalizedPokemonFilters>(() => {
     const filters = this.filters();
     return {
       type: filters.type.trim().toLowerCase(),
@@ -93,14 +110,14 @@ export class PokemonList {
 
   protected readonly isDiscoveryMode = computed(() => {
     const filters = this.normalizedFilters();
-    return (
-      this.normalizedSearch().length > 0 ||
-      !!filters.type ||
-      !!filters.weakness ||
-      this.sortMode() !== ''
-    );
+    const hasAdvancedFilters = !!filters.type || !!filters.weakness;
+    return this.normalizedSearch().length > 0 || hasAdvancedFilters || this.sortMode() !== '';
   });
+
   protected readonly isSurpriseMode = computed(() => this.surpriseCards() !== null);
+  protected readonly isBusy = computed(
+    () => this.loading() || this.loadingMore() || this.loadingFilterCatalog(),
+  );
 
   private readonly sourceCards = computed(() => {
     if (!this.isDiscoveryMode()) {
@@ -131,6 +148,14 @@ export class PokemonList {
     return this.filterPokemonCards(cards, term, filters);
   });
 
+  private readonly hasHiddenFilteredCards = computed(
+    () => this.displayedPokemons().length < this.filteredPokemons().length,
+  );
+
+  private readonly canFetchMoreFromApi = computed(
+    () => !this.isDiscoveryMode() && this.nextOffset() !== null,
+  );
+
   protected readonly displayedPokemons = computed(() => {
     const surpriseCards = this.surpriseCards();
     if (surpriseCards) {
@@ -146,19 +171,13 @@ export class PokemonList {
   );
 
   protected readonly shouldShowNoResults = computed(() => {
-    if (this.isSurpriseMode()) {
-      return false;
-    }
-
-    if (!this.isDiscoveryMode()) {
-      return false;
-    }
-
-    if (this.loading() || this.loadingFilterCatalog()) {
-      return false;
-    }
-
-    return this.filteredPokemons().length === 0;
+    return (
+      !this.isSurpriseMode() &&
+      this.isDiscoveryMode() &&
+      !this.loading() &&
+      !this.loadingFilterCatalog() &&
+      this.filteredPokemons().length === 0
+    );
   });
 
   protected readonly noResultsMessage = computed(() => {
@@ -171,37 +190,16 @@ export class PokemonList {
   });
 
   protected readonly shouldShowLoadMoreButton = computed(() => {
-    if (this.isSurpriseMode()) {
-      return false;
-    }
-
-    const cardsShown = this.displayedPokemons().length;
     const cardsAvailable = this.filteredPokemons().length;
-
-    if (cardsAvailable === 0) {
-      return false;
-    }
-
-    if (cardsShown < cardsAvailable) {
-      return true;
-    }
-
-    return !this.isDiscoveryMode() && this.nextOffset() !== null;
+    return (
+      !this.isSurpriseMode() &&
+      cardsAvailable > 0 &&
+      (this.hasHiddenFilteredCards() || this.canFetchMoreFromApi())
+    );
   });
 
   protected readonly canLoadMore = computed(() => {
-    if (this.loading() || this.loadingMore() || this.loadingFilterCatalog()) {
-      return false;
-    }
-
-    const cardsShown = this.displayedPokemons().length;
-    const cardsAvailable = this.filteredPokemons().length;
-
-    if (cardsShown < cardsAvailable) {
-      return true;
-    }
-
-    return !this.isDiscoveryMode() && this.nextOffset() !== null;
+    return !this.isBusy() && (this.hasHiddenFilteredCards() || this.canFetchMoreFromApi());
   });
 
   protected readonly loadMoreButtonText = computed(() => {
@@ -212,9 +210,7 @@ export class PokemonList {
     return 'Load more Pokemons';
   });
 
-  protected readonly isListLoading = computed(
-    () => this.loading() || this.loadingMore() || this.loadingFilterCatalog(),
-  );
+  protected readonly isListLoading = computed(() => this.isBusy());
 
   protected readonly surpriseIconPath =
     'M12 6V3L8 7l4 4V8c2.21 0 4 1.79 4 4 0 .7-.18 1.37-.5 1.95l1.46 1.46A5.96 5.96 0 0 0 18 12c0-3.31-2.69-6-6-6Zm-4.5 4.05L6.04 8.59A5.96 5.96 0 0 0 6 12c0 3.31 2.69 6 6 6v3l4-4-4-4v3c-2.21 0-4-1.79-4-4 0-.7.18-1.37.5-1.95Z';
@@ -240,7 +236,7 @@ export class PokemonList {
   }
 
   protected onSurpriseClick(): void {
-    if (this.loading() || this.loadingMore() || this.loadingFilterCatalog()) {
+    if (this.isBusy()) {
       return;
     }
 
@@ -256,7 +252,7 @@ export class PokemonList {
       .subscribe({
         next: (cards) => {
           if (cards.length === 0) {
-            this.error.set('No se encontraron Pokemons para Surprise Me.');
+            this.error.set(POKEMON_ERROR_MESSAGES.surpriseEmpty);
             return;
           }
 
@@ -264,7 +260,7 @@ export class PokemonList {
           this.surpriseCards.set(this.pickRandomPokemons(cards, this.pageSize));
         },
         error: () => {
-          this.error.set('No se pudieron obtener Pokemons aleatorios. Intenta nuevamente.');
+          this.error.set(POKEMON_ERROR_MESSAGES.surpriseLoad);
         },
       });
   }
@@ -278,10 +274,8 @@ export class PokemonList {
       return;
     }
 
-    const cardsShown = this.displayedPokemons().length;
-    const cardsAvailable = this.filteredPokemons().length;
-
-    if (cardsShown < cardsAvailable) {
+    if (this.hasHiddenFilteredCards()) {
+      const cardsAvailable = this.filteredPokemons().length;
       this.visibleCount.update((currentCount) =>
         Math.min(currentCount + this.pageSize, cardsAvailable),
       );
@@ -307,10 +301,7 @@ export class PokemonList {
   private loadInitialPokemons(): void {
     this.loading.set(true);
     this.error.set(null);
-    this.pokemons.set([]);
-    this.totalCount.set(0);
-    this.nextOffset.set(0);
-    this.visibleCount.set(0);
+    this.resetPokemonListState();
 
     this.getPokemonCardsPage(this.pageSize, 0)
       .pipe(
@@ -325,7 +316,7 @@ export class PokemonList {
           this.visibleCount.set(Math.min(this.pageSize, cards.length));
         },
         error: () => {
-          this.error.set('No se pudieron cargar los Pokemons. Intenta nuevamente.');
+          this.error.set(POKEMON_ERROR_MESSAGES.initialLoad);
           this.pokemons.set([]);
           this.nextOffset.set(null);
           this.visibleCount.set(0);
@@ -354,7 +345,7 @@ export class PokemonList {
           this.visibleCount.update((currentCount) => currentCount + appendedCount);
         },
         error: () => {
-          this.error.set('No se pudieron cargar más Pokemons. Intenta nuevamente.');
+          this.error.set(POKEMON_ERROR_MESSAGES.loadMore);
         },
       });
   }
@@ -376,7 +367,7 @@ export class PokemonList {
           this.filterCatalog.set(cards);
         },
         error: () => {
-          this.error.set('No se pudo cargar el catálogo de filtros (primeros 150).');
+          this.error.set(POKEMON_ERROR_MESSAGES.filterCatalog);
         },
       });
   }
@@ -389,21 +380,19 @@ export class PokemonList {
 
     return this.getPokemonCardsPage(this.filterCatalogSize, 0).pipe(
       map(({ cards }) => cards),
-      map((cards) => {
-        this.filterCatalog.set(cards);
-        return cards;
-      }),
+      tap((cards) => this.filterCatalog.set(cards)),
     );
   }
 
   private isPokemonSortMode(value: string): value is PokemonSortMode {
-    return (
-      value === '' ||
-      value === 'id-asc' ||
-      value === 'id-desc' ||
-      value === 'name-asc' ||
-      value === 'name-desc'
-    );
+    return POKEMON_SORT_MODES.has(value as PokemonSortMode);
+  }
+
+  private resetPokemonListState(): void {
+    this.pokemons.set([]);
+    this.totalCount.set(0);
+    this.nextOffset.set(0);
+    this.visibleCount.set(0);
   }
 
   private getPokemonCardsPage(limit: number, offset: number): Observable<PokemonCardsPage> {
@@ -494,7 +483,7 @@ export class PokemonList {
   private filterPokemonCards(
     cards: PokemonCardModel[],
     normalizedTerm: string,
-    normalizedFilters: { type: string; weakness: string },
+    normalizedFilters: NormalizedPokemonFilters,
   ): PokemonCardModel[] {
     if (!normalizedTerm && !normalizedFilters.type && !normalizedFilters.weakness) {
       return cards;
@@ -529,22 +518,21 @@ export class PokemonList {
 
   private matchesAdvancedFilters(
     pokemon: PokemonCardModel,
-    normalizedFilters: { type: string; weakness: string },
+    normalizedFilters: NormalizedPokemonFilters,
   ): boolean {
     const { type, weakness } = normalizedFilters;
 
-    if (type && !pokemon.types.some((pokemonType) => pokemonType.toLowerCase() === type)) {
+    const matchesType =
+      !type || pokemon.types.some((pokemonType) => pokemonType.toLowerCase() === type);
+    if (!matchesType) {
       return false;
     }
 
-    if (weakness) {
-      const pokemonWeaknesses = this.getWeaknesses(pokemon.types);
-      if (!pokemonWeaknesses.has(weakness)) {
-        return false;
-      }
+    if (!weakness) {
+      return true;
     }
 
-    return true;
+    return this.getWeaknesses(pokemon.types).has(weakness);
   }
 
   private getWeaknesses(types: string[]): Set<string> {

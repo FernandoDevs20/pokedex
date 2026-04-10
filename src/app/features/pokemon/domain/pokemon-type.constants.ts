@@ -39,4 +39,3 @@ export const TYPE_COLOR_MAP: Record<string, string> = {
   steel: '#b7b7ce',
   fairy: '#d685ad',
 };
-

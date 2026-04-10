@@ -17,7 +17,9 @@
   justify-content: center;
   text-decoration: none;
   box-shadow: 0 10px 30px rgb(0 0 0 / 22%);
-  transition: transform 180ms ease, background-color 180ms ease;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
 }
 
 .home-fab:hover {

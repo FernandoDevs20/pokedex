@@ -34,4 +34,3 @@ export class PokeballIcon {
   protected readonly ariaHidden = computed(() => (this.label() ? null : 'true'));
   protected readonly role = computed(() => (this.label() ? 'img' : null));
 }
-

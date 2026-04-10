@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
 
 type ButtonType = 'button' | 'submit' | 'reset';
 type IconAnimation = 'none' | 'rotate-hover' | 'rotate-always' | 'rotate-hover-click';

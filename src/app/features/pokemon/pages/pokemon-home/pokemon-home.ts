@@ -4,7 +4,10 @@ import { AdvanceSearchBar } from '../../ui/advance-search-bar/advance-search-bar
 import { Header } from '../../ui/header/header';
 import { PokemonList } from '../../ui/pokemon-list/pokemon-list';
 import { ScrollTopFab } from '../../../../shared/ui/scroll-top-fab/scroll-top-fab';
-import { DEFAULT_POKEMON_FILTERS, PokemonAdvancedFilters } from '../../data-access/pokemon-filters.models';
+import {
+  DEFAULT_POKEMON_FILTERS,
+  PokemonAdvancedFilters,
+} from '../../data-access/pokemon-filters.models';
 
 @Component({
   selector: 'app-pokemon-home',

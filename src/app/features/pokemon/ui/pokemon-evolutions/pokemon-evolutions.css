@@ -7,14 +7,13 @@
   padding: 0.8rem 0.9rem 1rem;
   border-radius: 0.7rem;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 1.8rem 100%, 0 calc(100% - 1.8rem));
-  background:
-    repeating-linear-gradient(
-      -45deg,
-      #515151 0,
-      #515151 14px,
-      #565656 14px,
-      #565656 28px
-    );
+  background: repeating-linear-gradient(
+    -45deg,
+    #515151 0,
+    #515151 14px,
+    #565656 14px,
+    #565656 28px
+  );
   color: #ffffff;
 }
 
@@ -60,7 +59,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 220ms ease, border-color 220ms ease;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease;
 }
 
 .evolution-link:hover .evolution-image-wrapper,

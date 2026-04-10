@@ -57,10 +57,12 @@
   background: #f36a3d;
   color: #ffffff;
   cursor: pointer;
-  transition: background-color 180ms ease, transform 180ms ease;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
 }
 
-.search-button:hover{
+.search-button:hover {
   background: #d93f0c;
   transform: translateY(-1px);
 }
@@ -84,7 +86,7 @@
   border-radius: 0.35rem;
   background: #4dad5b;
   color: #ffffff;
-  font-size: clamp(0.75rem, 0.2rem + 1vw, 1.2rem);;
+  font-size: clamp(0.75rem, 0.2rem + 1vw, 1.2rem);
   line-height: 1.35;
 }
 
@@ -116,7 +118,7 @@
     height: 2.8rem;
   }
 
-   .search-input{
+  .search-input {
     width: 60%;
   }
 
@@ -132,5 +134,4 @@
   .info-panel {
     width: 80%;
   }
-  
 }

@@ -245,18 +245,17 @@
 
 .version-button--blue.version-button--active {
   border-color: #1e7ab7;
-   transform:  scale(1.08);
+  transform: scale(1.08);
 }
 
 .version-button--pink.version-button--active {
   border-color: #dd4f78;
-  transform:  scale(1.08);
+  transform: scale(1.08);
 }
 
 .version-button:not(.version-button--active):hover {
   opacity: 0.9;
 }
-
 
 .version-pokeball:hover {
   transform: translateY(-1px) scale(1.08);

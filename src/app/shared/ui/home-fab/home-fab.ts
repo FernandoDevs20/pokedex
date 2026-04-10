@@ -11,4 +11,3 @@ import { RouterLink } from '@angular/router';
 export class HomeFab {
   readonly ariaLabel = input('Back to home');
 }
-
