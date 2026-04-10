@@ -133,6 +133,7 @@
   .search-input {
     flex: 1 1 auto;
     width: auto;
+    max-width: 12rem;
   }
 
   .search-button {
