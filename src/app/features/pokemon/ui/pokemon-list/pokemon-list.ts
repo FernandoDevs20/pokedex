@@ -9,16 +9,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import {
-  finalize,
-  from,
-  map,
-  mergeMap,
-  Observable,
-  of,
-  switchMap,
-  toArray,
-} from 'rxjs';
+import { finalize, from, map, mergeMap, Observable, of, switchMap, toArray } from 'rxjs';
 import { CommonButton } from '../../../../shared/ui/common-button/common-button';
 import { LoaderOverlay } from '../../../../shared/ui/loader-overlay/loader-overlay';
 import { SortSelect, SortSelectOption } from '../../../../shared/ui/sort-select/sort-select';
@@ -53,7 +44,10 @@ const POKEMON_SORT_COMPARATORS = {
   'id-desc': (a: PokemonCardModel, b: PokemonCardModel) => b.id - a.id,
   'name-asc': (a: PokemonCardModel, b: PokemonCardModel) => a.name.localeCompare(b.name),
   'name-desc': (a: PokemonCardModel, b: PokemonCardModel) => b.name.localeCompare(a.name),
-} as const satisfies Record<PokemonSortComparatorMode, (a: PokemonCardModel, b: PokemonCardModel) => number>;
+} as const satisfies Record<
+  PokemonSortComparatorMode,
+  (a: PokemonCardModel, b: PokemonCardModel) => number
+>;
 
 @Component({
   selector: 'app-pokemon-list',
@@ -147,7 +141,8 @@ export class PokemonList {
   });
 
   protected readonly isEmpty = computed(
-    () => !this.loading() && !this.error() && !this.isDiscoveryMode() && this.pokemons().length === 0,
+    () =>
+      !this.loading() && !this.error() && !this.isDiscoveryMode() && this.pokemons().length === 0,
   );
 
   protected readonly shouldShowNoResults = computed(() => {
@@ -471,10 +466,7 @@ export class PokemonList {
     return [...currentCards, ...uniqueIncomingCards];
   }
 
-  private pickRandomPokemons(
-    sourceCards: PokemonCardModel[],
-    amount: number,
-  ): PokemonCardModel[] {
+  private pickRandomPokemons(sourceCards: PokemonCardModel[], amount: number): PokemonCardModel[] {
     const shuffledCards = [...sourceCards];
 
     for (let index = shuffledCards.length - 1; index > 0; index -= 1) {
